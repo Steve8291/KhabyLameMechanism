@@ -9,7 +9,7 @@
 const int motor1A = GPIO_NUM_13;
 const int motor2A = GPIO_NUM_14;
 const int enableA = GPIO_NUM_27;
-const int potpin = GPIO_NUM_36;
+const int potPin = GPIO_NUM_36;
 
 // PWM settings
 const int freq = 20000; // PWM frequency: 20 kHz (Adjust 2-20 kHz as needed)
@@ -40,7 +40,7 @@ void setup() {
   Serial.begin(115200);
   pinMode(motor1A, OUTPUT);
   pinMode(motor2A, OUTPUT);
-  pinMode(potpin, INPUT);
+  pinMode(potPin, INPUT);
 
   // Set up PWM
   ledcAttach(enableA, freq, resolution);
@@ -50,7 +50,7 @@ void setup() {
 
 void loop() {
   int sensorValue;
-  sensorValue = analogRead(potpin) / 2 + 127.5;
+  sensorValue = analogRead(potPin) / 2 + 127.5;
   if (sensorValue == 127) {
     sensorValue = 0;
   }
