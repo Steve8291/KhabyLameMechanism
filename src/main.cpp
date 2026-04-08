@@ -4,6 +4,20 @@
 const int motor1A = GPIO_NUM_13;
 const int motor2A = GPIO_NUM_14;
 const int enableA = GPIO_NUM_27;
+
+// NEW CODE //
+const int ledPins[] = {GPIO_NUM_16, GPIO_NUM_17, GPIO_NUM_18};
+const int numLeds = 3;
+
+// Timer variables
+unsigned long previousMillis = 0;  // Stores the last time an LED was updated
+const long interval = 500;         // Interval at which to switch LEDs (in milliseconds)
+
+// State variable to keep track of which LED is currently lit
+int currentLed = 0;
+
+////////////////////////////////////////////////////
+
 const int ledPin1 = GPIO_NUM_16;
 const int ledPin2 = GPIO_NUM_17;
 const int ledPin3 = GPIO_NUM_18;
@@ -32,7 +46,7 @@ void forward(int spd, int rtime) {
   digitalWrite(motor2A, LOW);
   ledcWrite(enableA, spd);
   for (int i = 0; i < 20; i++) {
-    leds(random(2), random(2), random(2));
+    // leds(random(2), random(2), random(2));
     delay(rtime / 20);
   }
 }
@@ -48,6 +62,15 @@ void leds(bool ledState1 = LOW, bool ledState2 = LOW, bool ledState3 = LOW) {
   digitalWrite(ledPin1, ledState1);
   digitalWrite(ledPin2, ledState2);
   digitalWrite(ledPin3, ledState3);
+}
+
+void lightLED() {
+  if (currentLed >= numLeds) {
+      currentLed = 0;
+    }
+  
+    digitalWrite(ledPins[currentLed], HIGH); // Turn on the current LED
+    currentLed++; // Move to the next LED for the next interval
 }
 
 void setup() {
@@ -68,9 +91,28 @@ void setup() {
   analogReadResolution(resolution);
 
   leds();
+
+  // NEW CODE
+  // Set all LED pins as outputs and ensure they start in the OFF state
+  for (int i = 0; i < numLeds; i++) {
+    pinMode(ledPins[i], OUTPUT);
+    digitalWrite(ledPins[i], LOW);
+  }
 }
 
 void loop() {
+  // Get the current time
+  unsigned long currentMillis = millis();
+
+  // Check if the specified interval has passed
+  if (currentMillis - previousMillis >= interval) {
+    // Save the last time you blinked the LED
+    previousMillis = currentMillis;
+    lightLED();
+  }
+
+
+  ////////////////////////////////////////////////////////
   unsigned long startMillisMic = millis();  // Start of sample window
   unsigned int peakToPeak = 0;   // peak-to-peak level
 
