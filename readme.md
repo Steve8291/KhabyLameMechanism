@@ -9,4 +9,6 @@ I plan to add the following components
 * ~~Light I took from a fire alarm~~ I will need to find a new light because when hooked up to the Motor Driver it is way too dim
 * ~~Button/Switch~~ My idea was to have this switch the direction but that wouldn't be too useful. Instead I might make the the Potentiometer go between forwards and backwards
 
+most of these scripts prolly dont work atm
+
 ![diddyblud](images/IMG_2666-ezgif.com-video-to-gif-converter.gif)
