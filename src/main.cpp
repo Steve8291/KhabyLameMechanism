@@ -4,14 +4,6 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-bool DEBUG = true; // Activates serial prints
-// Sample window width in ms (50ms = 20Hz) for measuring sound amplitude. Adjust this based on how responsive you want the LEDs to be.
-// Shorter windows will be more responsive but may be more affected by noise, while longer windows will be smoother but less responsive.
-const int sampleWindow = 50;
-const int threshold = 2500; // Amplitude threshold to consider as "loud". Adjust this based on your microphone's sensitivity and environment noise level.
-const unsigned long interval = 100; // How long you need to scream to light up the next led (in ms)
-const int cylonInterval = 100; // Interval for the Cylon LED pattern in ms
-
 // pins
 const int ledPins[] = {
 GPIO_NUM_32, 
@@ -26,6 +18,15 @@ const int buzzerPin = GPIO_NUM_12;
 const int motor1A = GPIO_NUM_18;
 const int motor2A = GPIO_NUM_17;
 const int enableA = GPIO_NUM_16;
+
+//
+bool DEBUG = true; // Activates serial prints
+// Sample window width in ms (50ms = 20Hz) for measuring sound amplitude. Adjust this based on how responsive you want the LEDs to be.
+// Shorter windows will be more responsive but may be more affected by noise, while longer windows will be smoother but less responsive.
+const int sampleWindow = 50;
+const int threshold = 2500; // Amplitude threshold to consider as "loud". Adjust this based on your microphone's sensitivity and environment noise level.
+const unsigned long interval = 3000 / numLeds; // How long you need to scream to light up the next led (in ms)
+const int cylonInterval = 100; // Interval for the Cylon LED pattern in ms
 
 // ADC resolution
 const int resolution = 12;
@@ -64,29 +65,29 @@ void musicTask(void *pvParameters) {
 }
 
 void runCylonScanner() {
-  // Static variables remember their state between loop iterations
-  static unsigned long lastUpdate = 0;
-  static int currentLed = 0;
-  static int direction = 1;
+    // Static variables remember their state between loop iterations
+    static unsigned long lastUpdate = 0;
+    static int currentLed = 0;
+    static int direction = 1;
 
-  // Non-blocking timer check
-  if (millis() - lastUpdate >= cylonInterval) {
-    lastUpdate = millis();
+    // Non-blocking timer check
+    if (millis() - lastUpdate >= cylonInterval) {
+        lastUpdate = millis();
 
-    // 1. Turn off all LEDs
-    for (int i = 0; i < numLeds; i++) {
-      digitalWrite(ledPins[i], LOW);
+        // 1. Turn off all LEDs
+        for (int i = 0; i < numLeds; i++) {
+            digitalWrite(ledPins[i], LOW);
+        }
+
+        // 2. Turn on the active LED
+        digitalWrite(ledPins[currentLed], HIGH);
+
+        // 3. Logic to bounce back and forth
+        currentLed += direction;
+        if (currentLed >= numLeds - 1 || currentLed <= 0) {
+            direction *= -1; // Reverse direction
+        }
     }
-
-    // 2. Turn on the active LED
-    digitalWrite(ledPins[currentLed], HIGH);
-
-    // 3. Logic to bounce back and forth
-    currentLed += direction;
-    if (currentLed >= numLeds - 1 || currentLed <= 0) {
-      direction *= -1; // Reverse direction
-    }
-  }
 }
 
 

@@ -6,5 +6,4 @@ Project Components
 * `MAX4466` Microphone
 * Passive Buzzer
 
-I will update this gif later
-![diddyblud](images/IMG_2666-ezgif.com-video-to-gif-converter.gif)
+![diddyblud](images/updatedgif.gif)
