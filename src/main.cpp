@@ -6,12 +6,13 @@
 
 // pins
 const int ledPins[] = {
-GPIO_NUM_32, 
-GPIO_NUM_33, 
-GPIO_NUM_25, 
-GPIO_NUM_26,
-GPIO_NUM_27,
-GPIO_NUM_14};
+    GPIO_NUM_32,
+    GPIO_NUM_33,
+    GPIO_NUM_25,
+    GPIO_NUM_26,
+    GPIO_NUM_27,
+    GPIO_NUM_14
+};
 const int numLeds = sizeof(ledPins) / sizeof(ledPins[0]);
 const int micPin = GPIO_NUM_35;
 const int buzzerPin = GPIO_NUM_12;
@@ -90,7 +91,6 @@ void runCylonScanner() {
     }
 }
 
-
 void initiateKhaby() {
     playMusic = true;
 
@@ -110,7 +110,6 @@ void initiateKhaby() {
     litCount = 0;
     stop();
 }
-
 
 unsigned int readMicAmplitude() {
     const unsigned long startMillis = millis();

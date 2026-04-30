@@ -5,12 +5,13 @@
 */
 
 const int ledPins[] = {
-GPIO_NUM_32, 
-GPIO_NUM_33, 
-GPIO_NUM_25, 
-GPIO_NUM_26,
-GPIO_NUM_27,
-GPIO_NUM_14};
+    GPIO_NUM_32,
+    GPIO_NUM_33,
+    GPIO_NUM_25,
+    GPIO_NUM_26,
+    GPIO_NUM_27,
+    GPIO_NUM_14
+};
 const int numLeds = sizeof(ledPins) / sizeof(ledPins[0]);
 const int motor1A = GPIO_NUM_18;
 const int motor2A = GPIO_NUM_17;
@@ -19,6 +20,7 @@ const int buttonPin = GPIO_NUM_19;
 
 int current = 0;
 int direction = 1; // 1 = forward, -1 = backward
+int cylonInterval = 100;
 
 void setup() {
     for (int i = 0; i < numLeds; i++) {
@@ -39,7 +41,7 @@ void loop() {
         digitalWrite(motor2A, LOW);
         ledcWrite(enableA, 255);
         while (true) {
-                // Turn all LEDs off
+            // Turn all LEDs off
             for (int i = 0; i < numLeds; i++) {
                 digitalWrite(ledPins[i], LOW);
             }
@@ -47,7 +49,7 @@ void loop() {
             // Turn current LED on
             digitalWrite(ledPins[current], HIGH);
 
-            delay(100);
+            delay(cylonInterval);
 
             // Move position
             current += direction;
